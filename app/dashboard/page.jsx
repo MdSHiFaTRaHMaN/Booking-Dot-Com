@@ -15,8 +15,13 @@ import {
   ShoppingBag,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function DashboardOverview() {
+  const { data: session } = useSession();
+  const currentRole = session?.user?.role || 'ADMIN';
+  const staffId = session?.user?.staffId;
+
   const [bookings, setBookings] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,8 +37,20 @@ export default function DashboardOverview() {
       const bookingsData = await bookingsRes.json();
       const reviewsData = await reviewsRes.json();
 
-      if (bookingsData.success) setBookings(bookingsData.bookings || []);
-      if (reviewsData.success) setReviews(reviewsData.reviews || []);
+      let allBookings = bookingsData.success ? bookingsData.bookings || [] : [];
+      let allReviews = reviewsData.success ? reviewsData.reviews || [] : [];
+
+      if (currentRole === 'STAFF' && staffId) {
+        allBookings = allBookings.filter(
+          (b) => (b.staffId?._id || b.staffId) === staffId
+        );
+        allReviews = allReviews.filter(
+          (r) => (r.staffId?._id || r.staffId) === staffId
+        );
+      }
+
+      setBookings(allBookings);
+      setReviews(allReviews);
     } catch (e) {
       console.error(e);
     } finally {
@@ -43,7 +60,7 @@ export default function DashboardOverview() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [currentRole, staffId]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -74,7 +91,7 @@ export default function DashboardOverview() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px]-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-3">
               <Sparkles className="w-3.5 h-3.5" />
-              Live Shopify Checkout & Webhook Integration Active
+              Logged in as {session?.user?.name || 'User'} ({currentRole})
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">
               Salon & Spa Booking Hub
@@ -107,7 +124,7 @@ export default function DashboardOverview() {
           <div className="text-3xl font-bold text-white mb-1">{bookings.length}</div>
           <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>+12.4% vs last week</span>
+            <span>Active bookings list</span>
           </div>
         </div>
 
@@ -160,7 +177,7 @@ export default function DashboardOverview() {
         <div className="lg:col-span-2 glass-panel p-6 rounded-[5px] border border-slate-800">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-white">Today's Appointments</h3>
+              <h3 className="text-lg font-bold text-white">Appointments List</h3>
               <p className="text-xs text-slate-400">Real-time status updates and review/tip links</p>
             </div>
             <Link
@@ -175,7 +192,7 @@ export default function DashboardOverview() {
             <div className="p-8 text-center text-slate-500 text-sm">Loading appointments...</div>
           ) : bookings.length === 0 ? (
             <div className="p-8 text-center text-slate-500 text-sm">
-              No appointments found. Click 'Reset Demo Data' in top bar to seed.
+              No appointments recorded in the system yet.
             </div>
           ) : (
             <div className="space-y-4">
@@ -210,12 +227,13 @@ export default function DashboardOverview() {
                       <select
                         value={b.status}
                         onChange={(e) => handleStatusChange(b._id, e.target.value)}
-                        className={`text-xs font-semibold px-3 py-1.5 rounded-[5px] border transition-all cursor-pointer bg-slate-950 ${b.status === 'COMPLETED'
-                          ? 'text-emerald-400 border-emerald-500/40'
-                          : b.status === 'IN_PROGRESS'
+                        className={`text-xs font-semibold px-3 py-1.5 rounded-[5px] border transition-all cursor-pointer bg-slate-950 ${
+                          b.status === 'COMPLETED'
+                            ? 'text-emerald-400 border-emerald-500/40'
+                            : b.status === 'IN_PROGRESS'
                             ? 'text-amber-400 border-amber-500/40'
                             : 'text-cyan-400 border-cyan-500/40'
-                          }`}
+                        }`}
                       >
                         <option value="CONFIRMED">CONFIRMED</option>
                         <option value="IN_PROGRESS">IN PROGRESS</option>
@@ -254,7 +272,7 @@ export default function DashboardOverview() {
             </div>
 
             {reviews.length === 0 ? (
-              <div className="p-8 text-center text-slate-500 text-sm">No reviews submitted yet.</div>
+              <div className="p-8 text-center text-slate-500 text-sm">No customer reviews submitted yet.</div>
             ) : (
               <div className="space-y-4">
                 {reviews.slice(0, 3).map((rev) => (

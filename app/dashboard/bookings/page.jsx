@@ -10,8 +10,13 @@ import {
   HeartHandshake,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function BookingsListPage() {
+  const { data: session } = useSession();
+  const currentRole = session?.user?.role || 'ADMIN';
+  const staffId = session?.user?.staffId;
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -23,7 +28,13 @@ export default function BookingsListPage() {
       setLoading(true);
       const res = await fetch('/api/bookings');
       const data = await res.json();
-      if (data.success) setBookings(data.bookings || []);
+      if (data.success) {
+        let bList = data.bookings || [];
+        if (currentRole === 'STAFF' && staffId) {
+          bList = bList.filter((b) => (b.staffId?._id || b.staffId) === staffId);
+        }
+        setBookings(bList);
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -33,7 +44,7 @@ export default function BookingsListPage() {
 
   useEffect(() => {
     fetchBookings();
-  }, []);
+  }, [currentRole, staffId]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -56,8 +67,8 @@ export default function BookingsListPage() {
 
   const filteredBookings = bookings.filter((b) => {
     const matchesSearch =
-      b.customerName.toLowerCase().includes(search.toLowerCase()) ||
-      b.customerEmail.toLowerCase().includes(search.toLowerCase()) ||
+      (b.customerName || '').toLowerCase().includes(search.toLowerCase()) ||
+      (b.customerEmail || '').toLowerCase().includes(search.toLowerCase()) ||
       (b.shopifyOrderNumber && b.shopifyOrderNumber.toLowerCase().includes(search.toLowerCase()));
 
     const matchesStatus = statusFilter === 'ALL' || b.status === statusFilter;
@@ -133,8 +144,9 @@ export default function BookingsListPage() {
                     <tr
                       key={b._id}
                       onClick={() => setSelectedBooking(b)}
-                      className={`hover:bg-slate-800/40 transition-all cursor-pointer ${selectedBooking?._id === b._id ? 'bg-cyan-500/10' : ''
-                        }`}
+                      className={`hover:bg-slate-800/40 transition-all cursor-pointer ${
+                        selectedBooking?._id === b._id ? 'bg-cyan-500/10' : ''
+                      }`}
                     >
                       <td className="p-4 pl-6">
                         <div className="font-bold text-slate-200">{b.customerName}</div>
@@ -165,14 +177,15 @@ export default function BookingsListPage() {
 
                       <td className="p-4">
                         <span
-                          className={`px-2.5 py-1 rounded-[5px]-full text-[10px] font-bold border inline-block ${b.status === 'COMPLETED'
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                            : b.status === 'IN_PROGRESS'
+                          className={`px-2.5 py-1 rounded-[5px]-full text-[10px] font-bold border inline-block ${
+                            b.status === 'COMPLETED'
+                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                              : b.status === 'IN_PROGRESS'
                               ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
                               : b.status === 'CANCELLED'
-                                ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                                : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
-                            }`}
+                              ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                              : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                          }`}
                         >
                           {b.status}
                         </span>
@@ -184,7 +197,7 @@ export default function BookingsListPage() {
                             e.stopPropagation();
                             setSelectedBooking(b);
                           }}
-                          className="px-3 py-1.5 rounded-[5px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] border border-slate-700"
+                          className="px-3 py-1.5 rounded-[5px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] border border-slate-700 cursor-pointer"
                         >
                           View Details
                         </button>
@@ -204,7 +217,7 @@ export default function BookingsListPage() {
                 <h3 className="font-bold text-white text-base">Booking Details</h3>
                 <button
                   onClick={() => setSelectedBooking(null)}
-                  className="text-slate-400 hover:text-white text-xs font-bold px-2 py-1 bg-slate-800 rounded-[5px]"
+                  className="text-slate-400 hover:text-white text-xs font-bold px-2 py-1 bg-slate-800 rounded-[5px] cursor-pointer"
                 >
                   Close
                 </button>
@@ -239,7 +252,7 @@ export default function BookingsListPage() {
                   <select
                     value={selectedBooking.status}
                     onChange={(e) => handleStatusChange(selectedBooking._id, e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 text-slate-200 p-2.5 rounded-[5px] font-semibold text-xs focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-slate-900 border border-slate-800 text-slate-200 p-2.5 rounded-[5px] font-semibold text-xs focus:outline-none focus:border-cyan-500 cursor-pointer"
                   >
                     <option value="CONFIRMED">CONFIRMED</option>
                     <option value="IN_PROGRESS">IN PROGRESS</option>
