@@ -5,14 +5,62 @@ import User from '@/lib/models/User.js';
 import Service from '@/lib/models/Service.js';
 import bcrypt from 'bcryptjs';
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectToDatabase();
-    const staffMembers = await Staff.find({ status: 'ACTIVE' }).populate({ path: 'services', model: Service });
-    return NextResponse.json({ success: true, staff: staffMembers });
+    const { searchParams } = new URL(req.url || '');
+    const productId = searchParams?.get('productId');
+
+    let query = { status: 'ACTIVE' };
+    if (productId) {
+      const numericId = String(productId).split('/').pop();
+      query.$or = [
+        { shopifyProductIds: productId },
+        { shopifyProductIds: numericId },
+      ];
+    }
+
+    let staffMembers = await Staff.find(query).populate({ path: 'services', model: Service });
+
+    // Fallback to all active staff if none specific to product ID
+    if (productId && staffMembers.length === 0) {
+      staffMembers = await Staff.find({ status: 'ACTIVE' }).populate({ path: 'services', model: Service });
+    }
+
+    return NextResponse.json(
+      { success: true, staff: staffMembers },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      }
+    );
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: error.message },
+      {
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    );
   }
+}
+
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    }
+  );
 }
 
 export async function POST(req) {

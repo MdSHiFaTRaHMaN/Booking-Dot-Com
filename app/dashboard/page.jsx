@@ -102,6 +102,13 @@ export default function DashboardOverview() {
           </div>
           <div className="flex gap-3">
             <Link
+              href="/dashboard/products"
+              className="px-5 py-3 rounded-[5px] bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 font-bold text-xs tracking-wide uppercase transition-all flex items-center gap-2"
+            >
+              <ShoppingBag className="w-4 h-4 text-cyan-400" />
+              Shopify Products
+            </Link>
+            <Link
               href="/dashboard/bookings"
               className="px-5 py-3 rounded-[5px] bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs tracking-wide uppercase transition-all shadow-lg shadow-cyan-500/25 flex items-center gap-2"
             >

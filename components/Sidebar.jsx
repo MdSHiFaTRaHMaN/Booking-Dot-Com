@@ -28,6 +28,7 @@ export default function Sidebar() {
 
   const navItems = [
     { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'Shopify Products', href: '/dashboard/products', icon: ShoppingBag },
     { label: 'Booking Calendar', href: '/dashboard/calendar', icon: CalendarDays },
     { label: 'Bookings List', href: '/dashboard/bookings', icon: Calendar },
     { label: 'Services Catalog', href: '/dashboard/services', icon: Scissors },
