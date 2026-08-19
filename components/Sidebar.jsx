@@ -44,12 +44,12 @@ export default function Sidebar() {
         {/* Brand Header */}
         <div className="p-6 border-b border-slate-800/60 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-[5px] bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20 text-white">
+            <div className="p-2 rounded-[5px] bg-gradient-to-tr from-[#00F2FE] to-[#00F59B] shadow-lg shadow-cyan-500/20 text-slate-950">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="font-bold text-slate-100 text-base leading-tight tracking-tight">Shopify Booking</h1>
-              <p className="text-xs text-cyan-400 font-medium">Luxe Salon & Spa</p>
+              <h1 className="font-display text-xl tracking-wider leading-none heading-gradient uppercase">Shopify Booking</h1>
+              <p className="text-[11px] text-emerald-400 font-mono tracking-tight font-medium">Luxe Salon & Spa</p>
             </div>
           </div>
         </div>

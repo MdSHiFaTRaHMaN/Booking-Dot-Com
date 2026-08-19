@@ -34,8 +34,8 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <div className="glass-panel p-6 rounded-[5px] border border-slate-800">
-        <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-          <BarChart3 className="w-6 h-6 text-cyan-400" />
+        <h1 className="font-display text-3xl md:text-4xl tracking-wider leading-none heading-gradient uppercase flex items-center gap-3">
+          <BarChart3 className="w-6 h-6 text-[#00F2FE]" />
           Analytics & Performance Reports
         </h1>
         <p className="text-slate-400 text-xs mt-1">
