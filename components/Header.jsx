@@ -38,9 +38,9 @@ export default function Header() {
     <header className="h-20 border-b border-slate-800/60 glass-panel sticky top-0 z-30 px-8 flex items-center justify-between bg-[#0b0f17]/80">
       <div className="flex items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            Dashboard Portal
-            <span className="text-xs px-2.5 py-0.5 rounded-[5px]-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-medium">
+          <h2 className="flex items-center gap-3">
+            <span className="font-display text-2xl tracking-wider leading-none heading-gradient uppercase">Dashboard Portal</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-[5px] bg-[#00F59B]/10 text-[#00F59B] border border-[#00F59B]/30 font-mono font-bold tracking-wider uppercase">
               Live System
             </span>
           </h2>

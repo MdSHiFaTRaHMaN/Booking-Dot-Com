@@ -93,10 +93,10 @@ export default function DashboardOverview() {
               <Sparkles className="w-3.5 h-3.5" />
               Logged in as {session?.user?.name || 'User'} ({currentRole})
             </div>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="font-display text-4xl md:text-5xl tracking-wider leading-none heading-gradient uppercase">
               Salon & Spa Booking Hub
             </h1>
-            <p className="text-slate-400 text-sm mt-1 max-w-xl">
+            <p className="text-slate-400 text-xs md:text-sm mt-2 max-w-xl">
               Track appointments from Shopify storefront, manage staff time slots, and collect post-service customer reviews and staff tips securely.
             </p>
           </div>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db.js';
 import Service from '@/lib/models/Service.js';
 import Staff from '@/lib/models/Staff.js';
-import { fetchShopifyProductsStorefront, createShopifyProductVariantAdmin } from '@/lib/shopify.js';
+import { fetchShopifyProductsStorefront, createShopifyProductVariantAdmin, getShopDomain } from '@/lib/shopify.js';
 
 export async function GET() {
   try {
@@ -39,9 +39,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      shopDomain: process.env.SHOPIFY_STORE_DOMAIN || 'demo-salon-booking.myshopify.com',
+      shopDomain: getShopDomain('demo-salon-booking.myshopify.com'),
       isLiveCredentialsConfigured: Boolean(
-        process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN && !process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN.includes('demo')
+        (process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN && !process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN.includes('demo')) ||
+        (process.env.SHOPIFY_CLIENT_ID && process.env.SHOPIFY_CLIENT_SECRET)
       ),
       products: enrichedProducts,
       allDbServices: allServices,

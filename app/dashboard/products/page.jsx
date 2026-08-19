@@ -136,7 +136,7 @@ export default function ShopifyProductsPage() {
             <ShoppingBag className="w-3.5 h-3.5" />
             Shopify Storefront API Connected
           </div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h1 className="font-display text-3xl md:text-4xl tracking-wider leading-none heading-gradient uppercase">
             Shopify Products & Service Variants
           </h1>
           <p className="text-slate-400 text-xs mt-1">
@@ -188,7 +188,7 @@ export default function ShopifyProductsPage() {
         </div>
 
         <div className="text-xs text-slate-400 font-mono">
-          Showing <span className="text-cyan-400 font-bold">{filteredProducts.length}</span> Shopify products
+          Showing <span className="text-cyan-400 font-bold">{filteredProducts.length}</span> Shopify product
         </div>
       </div>
 

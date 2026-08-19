@@ -7,6 +7,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Bebas Neue"', '"Syne"', 'sans-serif'],
+        syne: ['"Syne"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
       colors: {
         brand: {
           50: '#f0f9ff',

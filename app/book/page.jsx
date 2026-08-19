@@ -249,14 +249,14 @@ function BookingFormContent() {
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold mb-1">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-[#00F59B]/10 border border-[#00F59B]/30 text-[#00F59B] text-[11px] font-mono font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5" />
             Luxe Salon & Spa Online Reservations
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="font-display text-4xl md:text-5xl tracking-wider leading-none heading-gradient uppercase block">
             Book Your Appointment
           </h1>
-          <p className="text-slate-400 text-xs max-w-md mx-auto">
+          <p className="text-slate-400 text-xs max-w-md mx-auto mt-2">
             Select your preferred salon service, specialist staff, date & time slot to complete your reservation.
           </p>
         </div>

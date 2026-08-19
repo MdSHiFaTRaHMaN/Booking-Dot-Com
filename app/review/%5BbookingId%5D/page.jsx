@@ -139,10 +139,12 @@ export default function CustomerReviewPage() {
         <div className="absolute top-0 right-0 w-72 h-72 bg-cyan-500/10 rounded-[5px]-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
 
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[5px]-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-[#00F59B]/10 border border-[#00F59B]/30 text-[#00F59B] text-[11px] font-mono font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" /> Service Completed
           </div>
-          <h1 className="text-2xl font-black text-white">How was your experience?</h1>
+          <h1 className="font-display text-3xl md:text-4xl tracking-wider leading-none heading-gradient uppercase block">
+            How was your experience?
+          </h1>
           <p className="text-xs text-slate-400">
             Thank you for visiting Luxe Salon & Spa. Please take a moment to leave a review and optionally tip your specialist.
           </p>
