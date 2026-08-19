@@ -19,16 +19,15 @@ export default function LoginPage() {
 
     try {
       const res = await signIn('credentials', {
-        email,
+        email: email.trim(),
         password,
         redirect: false,
       });
 
       if (res?.error) {
         setError('Invalid credentials. Please check email & password.');
-      } else {
-        router.push('/dashboard');
-        router.refresh();
+      } else if (res?.ok || !res?.error) {
+        window.location.href = '/dashboard';
       }
     } catch (err) {
       setError('An error occurred during login. Please try again.');
@@ -47,10 +46,10 @@ export default function LoginPage() {
         <div className="glass-panel p-8 rounded-[5px] border border-slate-800 shadow-2xl backdrop-blur-xl bg-[#0c111d]/90 space-y-6">
           {/* Header Branding */}
           <div className="text-center space-y-2">
-            <div className="inline-flex p-3 rounded-[5px] bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20 text-white mb-2">
+            <div className="inline-flex p-3 rounded-[5px] bg-gradient-to-tr from-[#00F2FE] to-[#00F59B] shadow-lg shadow-cyan-500/20 text-slate-950 mb-2">
               <Sparkles className="w-7 h-7" />
             </div>
-            <h1 className="text-2xl font-extrabold text-white tracking-tight">
+            <h1 className="font-display text-4xl tracking-wider leading-none heading-gradient uppercase block">
               Dashboard Login
             </h1>
             <p className="text-xs text-slate-400">

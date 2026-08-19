@@ -70,8 +70,8 @@ export default function CalendarPage() {
     <div className="space-y-6">
       <div className="glass-panel p-6 rounded-[5px] border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-            <CalendarDays className="w-6 h-6 text-cyan-400" />
+          <h1 className="font-display text-3xl md:text-4xl tracking-wider leading-none heading-gradient uppercase flex items-center gap-3">
+            <CalendarDays className="w-6 h-6 text-[#00F2FE]" />
             Booking Calendar Schedule
           </h1>
           <p className="text-slate-400 text-xs mt-1">
